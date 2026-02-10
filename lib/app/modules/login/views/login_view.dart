@@ -1,0 +1,69 @@
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import '../controllers/login_controller.dart';
+
+class LoginView extends GetView<LoginController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('LoginView'), centerTitle: true),
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: ListView(
+          children: [
+            TextField(
+              controller: controller.emailC,
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Email',
+              ),
+            ),
+
+            SizedBox(height: 20),
+
+            Obx(
+              () => TextField(
+                textInputAction: TextInputAction.done,
+                controller: controller.passC,
+                obscureText:
+                    controller.isHide.value, //untuk password agar di hide
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      controller.isHide
+                          .toggle(); //toggle untuk membalik niali ishide(bool)
+                    },
+                    icon: controller.isHide.value
+                        ? Icon(Icons.remove_red_eye)
+                        : Icon(Icons.remove_red_eye),
+                  ),
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text(
+                "LOGIN",
+                style: TextStyle(fontSize: 17, color: Colors.white),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(66, 40),
+                backgroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
