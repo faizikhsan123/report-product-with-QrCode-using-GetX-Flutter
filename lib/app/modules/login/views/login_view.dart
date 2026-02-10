@@ -34,12 +34,11 @@ class LoginView extends GetView<LoginController> {
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: () {
-                      controller.isHide
-                          .toggle(); //toggle untuk membalik niali ishide(bool)
+                      controller.isHide.toggle(); //toggle untuk membalik niali ishide(bool)
                     },
                     icon: controller.isHide.value
-                        ? Icon(Icons.remove_red_eye)
-                        : Icon(Icons.remove_red_eye),
+                        ? Icon(Icons.visibility_off)
+                        : Icon(Icons.visibility),
                   ),
                   border: OutlineInputBorder(),
                   labelText: 'Password',
@@ -54,8 +53,8 @@ class LoginView extends GetView<LoginController> {
                 style: TextStyle(fontSize: 17, color: Colors.white),
               ),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(66, 40),
-                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 11, horizontal: 1),
+                backgroundColor: const Color.fromARGB(255, 66, 76, 84),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
