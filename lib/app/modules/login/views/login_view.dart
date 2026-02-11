@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:qrcode_getx/app/controllers/auth_controller.dart';
 
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
+
+  final authC = Get.find<AuthController>(); //untuk memanggil authcontroller
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +33,7 @@ class LoginView extends GetView<LoginController> {
               () => TextField(
                 textInputAction: TextInputAction.done,
                 controller: controller.passC,
-                obscureText:
-                    controller.isHide.value, //untuk password agar di hide
+                obscureText: controller.isHide.value, //untuk password agar di hide
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: () {
@@ -47,7 +50,14 @@ class LoginView extends GetView<LoginController> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                if (controller.emailC.text.isEmpty || controller.passC.text.isEmpty) {
+                  Get.snackbar('Gagal', 'Email dan Password harus diisi');
+                }
+                else {
+                  authC.login(controller.emailC.text, controller.passC.text);
+                }
+              },
               child: Text(
                 "LOGIN",
                 style: TextStyle(fontSize: 17, color: Colors.white),

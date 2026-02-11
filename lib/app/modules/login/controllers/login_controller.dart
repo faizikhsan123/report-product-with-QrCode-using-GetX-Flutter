@@ -10,9 +10,10 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
-    emailC = TextEditingController();
-    passC = TextEditingController();
+   
+    ////untuk mengisi textfield saat pertama
+    emailC = TextEditingController(text: "admin@gmail.com");
+    passC = TextEditingController(text: "admin123");
     super.onInit();
   }
 

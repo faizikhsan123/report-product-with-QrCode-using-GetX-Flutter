@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933418119400",
+    "project_id": "qrcode-getx-5c8ea",
+    "storage_bucket": "qrcode-getx-5c8ea.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933418119400:android:e9b3435a4e4a76fb69d95d",
+        "android_client_info": {
+          "package_name": "com.example.qrcode_getx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjiT5n4X-CcITFALTl0khb8wBiR7ON81I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
