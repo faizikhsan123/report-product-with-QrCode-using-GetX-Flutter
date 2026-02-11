@@ -48,7 +48,24 @@ class AddProductView extends GetView<AddProductController> {
           ),
           SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              //validasi form agar tidak kosong
+              if (controller.codeC.text.isEmpty || controller.nameC.text.isEmpty || controller.quantityC.text.isEmpty) {
+                Get.snackbar(
+                  "Gagal",
+                  "Semua Field Harus Diisi",
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
+                return;
+              }
+
+              controller.addProduct(
+                int.parse(controller.codeC.text), //parse dari string ke int
+                controller.nameC.text,
+                int.parse(controller.quantityC.text),  //parse dari string ke int
+              );
+            },
             child: Text(
               "Add Product",
               style: TextStyle(fontSize: 17, color: Colors.white),

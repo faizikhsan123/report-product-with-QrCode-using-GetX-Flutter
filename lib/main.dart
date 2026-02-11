@@ -5,12 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qrcode_getx/app/controllers/auth_controller.dart';
 import 'package:qrcode_getx/app/modules/LoadingView.dart';
+import 'package:qrcode_getx/firebase_options.dart';
 
 import 'app/routes/app_pages.dart';
 
 void main() async { //async
   WidgetsFlutterBinding.ensureInitialized(); //tambahkan ini
-    await Firebase.initializeApp(); //dan ini
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform, //tambahkan ini
+    ); //dan ini
   runApp(
     MyApp()
   );
