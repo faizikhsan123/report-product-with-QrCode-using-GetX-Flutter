@@ -22,11 +22,11 @@ class HomeView extends GetView<HomeController> {
             mainAxisSpacing: 20,
           ),
           itemBuilder: (context, index) {
-            late IconData icon; //untuk icon
-            late String judul; //untuk judul
-            late VoidCallback onTap; //ini untuk fungsinya
+            late IconData icon;
+            late String judul; 
+            late VoidCallback onTap; 
 
-            switch (index) { //ini sesuai index jika index ... maka icon ... dan judul ... dan function akan menyesuaikan index 
+            switch (index) { 
               case 0:
               icon = Icons.post_add_rounded;
               judul = "Add product";
@@ -51,7 +51,7 @@ class HomeView extends GetView<HomeController> {
               icon = Icons.document_scanner_outlined;
               judul = "Katalog";
               onTap = (){
-                print("Open Pdf");
+               controller.DownloadKataLog(); //jalankan DownloadKataLog
               };
                 
                 break;
@@ -63,12 +63,12 @@ class HomeView extends GetView<HomeController> {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
-                  onTap(); //jalankan  ontap sesuai index
+                  onTap(); 
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, size: 50, color: Colors.white), //icon sesuai index
+                    Icon(icon, size: 50, color: Colors.white), 
                     Text("${judul}"),
                   ],
                 ),
@@ -79,7 +79,7 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          authC.logout(); //untuk logout
+          authC.logout(); 
         },
         child: Icon(Icons.logout),
       ),

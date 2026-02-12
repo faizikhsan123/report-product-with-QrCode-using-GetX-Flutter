@@ -13,6 +13,7 @@ class DetailProductController extends GetxController {
     CollectionReference products = firestore.collection("products");
 
     try {
+      
       await products.doc(id).update({"name": name, "quantity": quantity});
       Get.defaultDialog(
         title: 'Berhasil',

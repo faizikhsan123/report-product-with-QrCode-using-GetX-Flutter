@@ -2,23 +2,27 @@ name: qrcode_getx
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment:
+environment: 
   sdk: ^3.9.2
 
-dependencies:
+dependencies: 
   cloud_firestore: 6.1.2
   cupertino_icons: ^1.0.8
   firebase_auth: 6.1.4
   firebase_core: 4.4.0
-  flutter:
-    sdk: flutter
   get: 4.7.3
   qr_flutter: ^4.1.0
-
-dev_dependencies:
-  flutter_lints: ^5.0.0
-  flutter_test:
+  open_file: 3.5.11
+  path_provider: 2.1.5
+  pdf: 3.11.3
+  flutter: 
     sdk: flutter
 
-flutter:
+dev_dependencies: 
+  flutter_lints: ^5.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
   uses-material-design: true
+
