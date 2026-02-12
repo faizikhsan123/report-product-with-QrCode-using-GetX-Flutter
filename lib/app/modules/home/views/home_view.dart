@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:qrcode_getx/app/controllers/auth_controller.dart';
 import 'package:qrcode_getx/app/routes/app_pages.dart';
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  final authC = Get.find<AuthController>(); //import auth controller
+  final authC = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,37 +23,54 @@ class HomeView extends GetView<HomeController> {
           ),
           itemBuilder: (context, index) {
             late IconData icon;
-            late String judul; 
-            late VoidCallback onTap; 
+            late String judul;
+            late VoidCallback onTap;
 
-            switch (index) { 
+            switch (index) {
               case 0:
-              icon = Icons.post_add_rounded;
-              judul = "Add product";
-              onTap = () => Get.toNamed(Routes.ADD_PRODUCT);
-                
+                icon = Icons.post_add_rounded;
+                judul = "Add product";
+                onTap = () => Get.toNamed(Routes.ADD_PRODUCT);
+
                 break;
               case 1:
-              icon = Icons.list_alt_outlined;
-              judul = "Products";
-              onTap = () => Get.toNamed(Routes.ALL_PRODUCTS);
-         
+                icon = Icons.list_alt_outlined;
+                judul = "Products";
+                onTap = () => Get.toNamed(Routes.ALL_PRODUCTS);
+
                 break;
               case 2:
-              icon = Icons.qr_code;
-              judul = "Qr Code";
-              onTap = (){
-                print("Open camera");
-              };
-                
+                icon = Icons.qr_code; //qrcode
+                judul = "Qr Code";
+                onTap = () async {
+                  String? res = await SimpleBarcodeScanner.scanBarcode( //res = hasil scan
+                    context,
+                    barcodeAppBar: const BarcodeAppBar( //tampilan appbar scan
+                      appBarTitle: 'Test',
+                      centerTitle: false,
+                      enableBackButton: true,
+                      backButtonIcon: Icon(Icons.arrow_back_ios),
+                    ),
+                    isShowFlashIcon: true, //flash
+                    delayMillis: 2000,
+                    cameraFace: CameraFace.front, //kamera belakang
+                  );
+
+                  //cek hasil scan
+                  if (res != null && res != "-1") {
+                    await getProductByCode(res); //jalanman getProductByCode 
+                  } else {
+                    Get.snackbar("Batal", "Scan dibatalkan");
+                  }
+                };
                 break;
               case 3:
-              icon = Icons.document_scanner_outlined;
-              judul = "Katalog";
-              onTap = (){
-               controller.DownloadKataLog(); //jalankan DownloadKataLog
-              };
-                
+                icon = Icons.document_scanner_outlined;
+                judul = "Katalog";
+                onTap = () {
+                  controller.DownloadKataLog();
+                };
+
                 break;
               default:
             }
@@ -63,12 +80,12 @@ class HomeView extends GetView<HomeController> {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
-                  onTap(); 
+                  onTap();
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(icon, size: 50, color: Colors.white), 
+                    Icon(icon, size: 50, color: Colors.white),
                     Text("${judul}"),
                   ],
                 ),
@@ -79,7 +96,7 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          authC.logout(); 
+          authC.logout();
         },
         child: Icon(Icons.logout),
       ),

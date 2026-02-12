@@ -10,30 +10,25 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:qrcode_getx/app/data/models/product_model.dart';
 
 class HomeController extends GetxController {
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  RxList<Product> products = <Product>[].obs; //menggunakan RxList untuk products yg tipenya model Product awalnya daatanya kosong
+  RxList<Product> products = <Product>[].obs;
 
- 
   void DownloadKataLog() async {
     final pdf = pw.Document();
 
-    var getData = await firestore.collection("products").get(); //ambil semua document ygg ada di collection products
+    var getData = await firestore.collection("products").get();
 
-    //reset all data (modelsnya) agar tidak menjadi duplikat
     products([]);
 
-    getData.docs.forEach((element) { //untuk mengambil data tiap document
-      products.add(Product.fromJson(element.data())); //masukkan data ke models products yg diatas(kosong) 
-    },);
+    getData.docs.forEach((element) {
+      products.add(Product.fromJson(element.data()));
+    });
 
     pdf.addPage(
       pw.MultiPage(
-        //ganti ke pw.MultiPage karena pdfnya bisa lebih dari 1 halaman
         pageFormat: PdfPageFormat.a4,
-        build: (context) => [ //multi page langsung return list
-
+        build: (context) => [
           pw.Center(
             child: pw.Text(
               "KataLog Products",
@@ -42,7 +37,7 @@ class HomeController extends GetxController {
             ),
           ),
           pw.SizedBox(height: 20),
-          
+
           pw.Table(
             border: pw.TableBorder.all(color: PdfColors.black, width: 2),
             children: [
@@ -92,32 +87,36 @@ class HomeController extends GetxController {
               ),
 
               ...List.generate(
-                products.length, //generate sebanyak jumlah products
+                products.length,
                 (index) => pw.TableRow(
-                  
                   children: [
                     pw.Padding(
                       padding: pw.EdgeInsets.all(10),
-                      child: pw.Center(child: pw.Text('${index + 1}',),)
+                      child: pw.Center(child: pw.Text('${index + 1}')),
                     ),
                     pw.Padding(
                       padding: pw.EdgeInsets.all(10),
-                      child: pw.Center(child: pw.Text('${products[index].code}',),) //sekarang ambil dari models products
+                      child: pw.Center(
+                        child: pw.Text('${products[index].code}'),
+                      ),
                     ),
                     pw.Padding(
                       padding: pw.EdgeInsets.all(10),
-                       child: pw.Center(child: pw.Text('${products[index].name}',),)
+                      child: pw.Center(
+                        child: pw.Text('${products[index].name}'),
+                      ),
                     ),
                     pw.Padding(
                       padding: pw.EdgeInsets.all(10),
-                      child: pw.Center(child: pw.Text('${products[index].quantity}',),)
+                      child: pw.Center(
+                        child: pw.Text('${products[index].quantity}'),
+                      ),
                     ),
                     pw.Padding(
                       padding: pw.EdgeInsets.all(10),
                       child: pw.BarcodeWidget(
-                        //widget untuk membuat qr code
-                        data: '${products[index].code}', //buat barcode berdasarkan code
-                        barcode: pw.Barcode.qrCode(), //tampilan barcode
+                        data: '${products[index].code}',
+                        barcode: pw.Barcode.qrCode(),
                         height: 50,
                         width: 50,
                       ),
@@ -140,5 +139,33 @@ class HomeController extends GetxController {
     await file.writeAsBytes(bytes);
 
     await OpenFile.open(file.path);
+  }
+}
+
+Future<Product?> getProductByCode(String code) async {
+  try {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    final query = await firestore
+        .collection("products")
+        .where("code", isEqualTo: code)
+        .get();
+
+    if (query.docs.isEmpty) {
+      Get.snackbar('Gagal', 'Produk tidak ditemukan');
+      return null;
+    }
+
+    //karena kita makai where maka hasilnya berupa list jadi kita ambil data pertama
+
+    var data = query.docs.first.data(); //ambil data pertama
+    var product = Product.fromJson(data); //parsing data ke model
+
+    Get.snackbar('Berhasil', 'Produk ditemukan: ${product.name}');
+    return product;
+  } catch (e) {
+    print(e);
+    Get.snackbar('Error', 'Terjadi kesalahan');
+    return null;
   }
 }
