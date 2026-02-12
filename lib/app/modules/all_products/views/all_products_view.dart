@@ -10,8 +10,6 @@ import 'package:qrcode_getx/app/routes/app_pages.dart';
 import '../controllers/all_products_controller.dart';
 
 class AllProductsView extends GetView<AllProductsController> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,23 +21,20 @@ class AllProductsView extends GetView<AllProductsController> {
             var data = asyncSnapshot.data!.docs;
 
             if (data.isEmpty) {
-              //jika snapshot tidak ada data
               return Center(child: Text("Data Kosong"));
             }
             return ListView.builder(
               itemCount: data.length,
               padding: EdgeInsets.all(10),
               itemBuilder: (context, index) {
-                //mengubah data firestore (Map) menjadi object Product (model)
-              var product = Product.fromJson(data[index].data() as Map<String, dynamic>);
-                
+                var product = Product.fromJson(data[index].data() as Map<String, dynamic>);
 
                 return Card(
                   margin: EdgeInsets.only(bottom: 20),
                   elevation: 5,
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed(Routes.DETAIL_PRODUCT);
+                      Get.toNamed(Routes.DETAIL_PRODUCT,arguments:product); //lempar masing masing product melalaui argument 
                     },
                     child: Container(
                       color: const Color.fromARGB(255, 255, 255, 255),
@@ -55,12 +50,15 @@ class AllProductsView extends GetView<AllProductsController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  product.code.toString(), //mengambil data dari model
+                                  product.code.toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 10),
-                                Text(product.name ?? ""), //data dari model
-                                Text(product.quantity.toString()),//data dari model 
+                               Text("nama : ${product.name}"),
+                                Text("jumlah : ${product.quantity}"),
+                              
+                            
+                               
                               ],
                             ),
                           ),
@@ -70,10 +68,9 @@ class AllProductsView extends GetView<AllProductsController> {
                               height: 100,
                               width: 100,
                               child: QrImageView(
-                                //widget qr
-                                data: product.code.toString(), //datanya dari code product ini akan dijadikan qr
-                                version: QrVersions.auto, //versi qr
-                                size: 200.0, //ukuran qr
+                                data: product.code.toString(),
+                                version: QrVersions.auto,
+                                size: 200.0,
                               ),
                             ),
                           ),
